@@ -24,7 +24,8 @@
 
 	<modules>
 		<module>lesson4-spring-boot</module>
-	</modules>
+        <module>lesson5-hibernate</module>
+    </modules>
 
 	<dependencies>
 		<dependency>
