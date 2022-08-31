@@ -1,26 +1,29 @@
 package ru.fominskiy.services;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.fominskiy.persists.Product;
+import ru.fominskiy.repositories.ProductRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 @Scope("prototype")
+@AllArgsConstructor
 public class Cart {
 
+    private final ProductRepository productRepository;
     private Set<Product> cart = new HashSet<>();
 
-    public void add(Product product) {
-        cart.add(product);
+    public void add(long id) {
+        Optional<Product> product = productRepository.findById(id);
+        cart.add(product.get());
     }
 
-    public void remove(Product product) {
-        cart.remove(product);
+    public void remove(long id) {
+        Optional<Product> product = productRepository.findById(id);
+        cart.remove(product.get());
     }
 
     public List<Product> getAllProducts() {
