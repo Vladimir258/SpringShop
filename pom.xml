@@ -23,7 +23,6 @@
 	</properties>
 
 	<modules>
-		<module>lesson4-spring-boot</module>
         <module>lesson5-hibernate</module>
     </modules>
 
