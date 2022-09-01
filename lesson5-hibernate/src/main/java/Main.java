@@ -1,4 +1,6 @@
 import org.hibernate.cfg.Configuration;
+import ru.fominskiy.dao.ProductDao;
+import ru.fominskiy.model.Product;
 import ru.fominskiy.model.User;
 
 import javax.persistence.EntityManagerFactory;
@@ -11,54 +13,36 @@ public class Main {
                 .configure("hibernate.cfg.xml")
                 .buildSessionFactory();
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        ProductDao productDao = new ProductDao(entityManagerFactory.createEntityManager());
 
-        // INSERT
-//        entityManager.getTransaction().begin();
-//        entityManager.persist(new User("User1", "1@a.com", "pass1"));
-//        entityManager.persist(new User("User2", "2@a.com", "pass2"));
-//        entityManager.persist(new User("User3", "3@a.com", "pass3"));
-//        entityManager.getTransaction().commit();
+        productDao.getEntityManager().getTransaction().begin();
+        productDao.saveOrUpdate(new Product("Product1", 100F));
+        productDao.saveOrUpdate(new Product("Product2", 200F));
+        productDao.saveOrUpdate(new Product("Product3", 300F));
+        productDao.getEntityManager().getTransaction().commit();
 
-        // SELECT
-//        User user = entityManager.find(User.class, 1L);
-//        System.out.println(user.getUsername());
+        Product product = productDao.findById(3L);
+        System.out.println(product.getTitle());
 
-        // JPQL, HQL
-                // List<User> users = entityManager.createQuery("select u from User u", User.class).getResultList();
-//        List<User> users = entityManager.createQuery("select u from User u where u.id in (1, 2)", User.class).getResultList();
-//        for (User u: users) {
-//            System.out.println(u.getUsername());
-//        }
+        List<Product> productsList = productDao.getEntityManager().createQuery("select p from Product p", Product.class).getResultList();
+        for (Product p: productsList) {
+            System.out.println(p.getTitle());
+        }
 
-        // UPDATE v1
-//        entityManager.getTransaction().begin();
-//        User user = entityManager.find(User.class, 1L);
-//        user.setUsername("new Username");
-//        entityManager.getTransaction().commit();
-//        entityManager.close();
+        productDao.getEntityManager().getTransaction().begin();
+        Product product1 = productDao.findById(1L);
+        product1.setTitle("NewProduct");
 
-        // UPDATE v2
-//        entityManager.getTransaction().begin();
-//        User user = new User("User2Second", "2@a.com", "pass2");
-//        user.setId(2L);
-//        entityManager.merge(user);
-//        entityManager.getTransaction().commit();
-//        entityManager.close();
-
-        // DELETE
-//        entityManager.getTransaction().begin();
-//        // 1 способ JPQL
-//        //entityManager.createQuery("delete from User u where u.id = 3").executeUpdate();
-//
-//        // 2 способ
-//        User user = entityManager.find(User.class, 2L);
-//        entityManager.remove(user);
-//
-//        entityManager.getTransaction().commit();
-//        entityManager.close();
+        productDao.deleteById(2L);
+        productDao.getEntityManager().getTransaction().commit();
 
 
+        productsList = productDao.getEntityManager().createQuery("select p from Product p", Product.class).getResultList();
+        for (Product p: productsList) {
+            System.out.println(p.getTitle());
+        }
+
+        productDao.getEntityManager().close();
         entityManagerFactory.close();
     }
 }
