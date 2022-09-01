@@ -11,6 +11,11 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Table(name = "products")
+@NamedQueries({
+        @NamedQuery(name = "findAllProducts", query = "Select p from Product p"),
+        @NamedQuery(name = "countAllProducts", query = "Select count(p) from Product p"),
+        @NamedQuery(name = "deleteProductById", query = "delete from Product p where p.id = :id")
+})
 public class Product {
 
     @Id

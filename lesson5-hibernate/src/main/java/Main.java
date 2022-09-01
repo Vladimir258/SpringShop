@@ -13,36 +13,33 @@ public class Main {
                 .configure("hibernate.cfg.xml")
                 .buildSessionFactory();
 
-        ProductDao productDao = new ProductDao(entityManagerFactory.createEntityManager());
+        ProductDao productDao = new ProductDao(entityManagerFactory);
+        Product product;
 
-        productDao.getEntityManager().getTransaction().begin();
         productDao.saveOrUpdate(new Product("Product1", 100F));
         productDao.saveOrUpdate(new Product("Product2", 200F));
         productDao.saveOrUpdate(new Product("Product3", 300F));
-        productDao.getEntityManager().getTransaction().commit();
 
-        Product product = productDao.findById(3L);
+        product = productDao.findById(3L).get();
         System.out.println(product.getTitle());
 
-        List<Product> productsList = productDao.getEntityManager().createQuery("select p from Product p", Product.class).getResultList();
+        List<Product> productsList = productDao.findAll();
         for (Product p: productsList) {
             System.out.println(p.getTitle());
         }
 
-        productDao.getEntityManager().getTransaction().begin();
-        Product product1 = productDao.findById(1L);
-        product1.setTitle("NewProduct");
+
+        product = productDao.findById(1L).get();
+        product.setTitle("NewProduct");
+        productDao.saveOrUpdate(product);
 
         productDao.deleteById(2L);
-        productDao.getEntityManager().getTransaction().commit();
 
-
-        productsList = productDao.getEntityManager().createQuery("select p from Product p", Product.class).getResultList();
+        productsList = productDao.findAll();
         for (Product p: productsList) {
             System.out.println(p.getTitle());
         }
 
-        productDao.getEntityManager().close();
         entityManagerFactory.close();
     }
 }
