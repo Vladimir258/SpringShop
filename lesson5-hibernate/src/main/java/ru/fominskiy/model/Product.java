@@ -1,10 +1,8 @@
 package ru.fominskiy.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +25,12 @@ public class Product {
 
     @Column(nullable = false)
     private Float cost;
+
+    @OneToMany (
+            mappedBy = "product",
+            orphanRemoval = true
+    )
+    private List<SaleBook> saleBookList;
 
     public Product(String title, Float cost) {
         this.title = title;
