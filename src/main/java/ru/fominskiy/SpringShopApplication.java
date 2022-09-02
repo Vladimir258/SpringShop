@@ -1,4 +1,4 @@
-package ru.fominskiy.SpringShop;
+package ru.fominskiy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
