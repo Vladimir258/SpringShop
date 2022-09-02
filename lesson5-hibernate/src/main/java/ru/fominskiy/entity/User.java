@@ -1,4 +1,4 @@
-package ru.fominskiy.model;
+package ru.fominskiy.entity;
 
 import javax.persistence.*;
 import lombok.*;
@@ -8,6 +8,11 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @Table(name = "users")
+@NamedQueries({
+        @NamedQuery(name = "findAllUsers", query = "Select u from User u"),
+        @NamedQuery(name = "countAllUsers", query = "Select count(u) from User u"),
+        @NamedQuery(name = "deleteUserById", query = "delete from User u where u.id = :id")
+})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

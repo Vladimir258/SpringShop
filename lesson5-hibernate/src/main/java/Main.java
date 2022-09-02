@@ -1,10 +1,8 @@
 import org.hibernate.cfg.Configuration;
-import ru.fominskiy.dao.ProductDao;
-import ru.fominskiy.model.Product;
-import ru.fominskiy.model.User;
+import ru.fominskiy.dao.UserDao;
+import ru.fominskiy.entity.User;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityManager;
 import java.util.List;
 
 public class Main {
@@ -13,36 +11,31 @@ public class Main {
                 .configure("hibernate.cfg.xml")
                 .buildSessionFactory();
 
-        ProductDao productDao = new ProductDao(entityManagerFactory.createEntityManager());
+        UserDao userDao = new UserDao(entityManagerFactory);
+        User user;
 
-        productDao.getEntityManager().getTransaction().begin();
-        productDao.saveOrUpdate(new Product("Product1", 100F));
-        productDao.saveOrUpdate(new Product("Product2", 200F));
-        productDao.saveOrUpdate(new Product("Product3", 300F));
-        productDao.getEntityManager().getTransaction().commit();
+        userDao.saveOrUpdate(new User("User1", "mail@one", "pass1"));
+        userDao.saveOrUpdate(new User("User2", "mail@two", "pass2"));
+        userDao.saveOrUpdate(new User("User3", "mail@three", "pass3"));
 
-        Product product = productDao.findById(3L);
-        System.out.println(product.getTitle());
+        user = userDao.findById(3L).get();
+        System.out.println(user.getUsername());
 
-        List<Product> productsList = productDao.getEntityManager().createQuery("select p from Product p", Product.class).getResultList();
-        for (Product p: productsList) {
-            System.out.println(p.getTitle());
+        List<User> usersList = userDao.findAll();
+        for (User u: usersList) {
+            System.out.println(u.getUsername());
         }
 
-        productDao.getEntityManager().getTransaction().begin();
-        Product product1 = productDao.findById(1L);
-        product1.setTitle("NewProduct");
+        user = userDao.findById(1L).get();
+        user.setUsername("NewUser");
+        userDao.saveOrUpdate(user);
+        userDao.deleteById(2L);
 
-        productDao.deleteById(2L);
-        productDao.getEntityManager().getTransaction().commit();
-
-
-        productsList = productDao.getEntityManager().createQuery("select p from Product p", Product.class).getResultList();
-        for (Product p: productsList) {
-            System.out.println(p.getTitle());
+        usersList = userDao.findAll();
+        for (User p: usersList) {
+            System.out.println(p.getUsername());
         }
 
-        productDao.getEntityManager().close();
         entityManagerFactory.close();
     }
 }
