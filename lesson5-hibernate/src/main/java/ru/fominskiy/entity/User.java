@@ -3,6 +3,8 @@ package ru.fominskiy.entity;
 import javax.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -21,15 +23,16 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
-    private String email;
-
+    @OneToMany (mappedBy = "user",  // У одного пользователя может быть несколько контактов
+                cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+                orphanRemoval = true)
+    private List<Contact> contacts;
     @Column(nullable = false, length = 1024)
     private String password;
 
-    public User(String username, String email, String password) {
+    public User(String username, List<Contact> contacts, String password) {
         this.username = username;
-        this.email = email;
+        this.contacts = contacts;
         this.password = password;
     }
 }
