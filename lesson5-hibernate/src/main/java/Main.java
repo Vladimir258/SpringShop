@@ -18,7 +18,7 @@ public class Main {
 
         saleService.customerProducts(1L);
         saleService.productsCustomers(2L);
-        saleService.detailBuy(1L,2L);
+        saleService.detailBuy(1L,1L);
 
 //        Product product;
 //

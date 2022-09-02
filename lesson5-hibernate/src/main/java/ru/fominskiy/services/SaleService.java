@@ -1,22 +1,18 @@
 package ru.fominskiy.services;
 
-
 import lombok.AllArgsConstructor;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.*;
 
 @AllArgsConstructor
 public class SaleService {
     EntityManagerFactory emFactory;
-
 
     public void customerProducts(Long id) {
         EntityManager em = emFactory.createEntityManager();
         em.getTransaction().begin();
         em.createQuery("SELECT c " +
                         "FROM Customer c " +
-                        "join c.sale_book s " +
+                        "join c.saleBookList s " +
                         "join s.product p " +
                         "WHERE c.id = :customerId")
                 .setParameter("customerId", id)
@@ -30,7 +26,7 @@ public class SaleService {
         em.getTransaction().begin();
         em.createQuery("SELECT p " +
                         "FROM Product p " +
-                        "join p.sale_book s " +
+                        "join p.saleBookList s " +
                         "join s.customer c " +
                         "WHERE p.id = :productId")
                 .setParameter("productId", id)
@@ -43,7 +39,7 @@ public class SaleService {
         EntityManager em = emFactory.createEntityManager();
         em.getTransaction().begin();
         em.createQuery("SELECT s " +
-                        "FROM sale_book s " +
+                        "FROM SaleBook s " +
                         "join s.customer c " +
                         "join s.product p " +
                         "WHERE p.id = :productId AND c.id = :customerId " )
