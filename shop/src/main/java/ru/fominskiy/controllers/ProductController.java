@@ -22,15 +22,29 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
+    // Не удаляю для наглядности
+//    @GetMapping
+//    public String listPage(@RequestParam Optional<String> productFilter, Model model) {
+//        if(productFilter.isEmpty() || productFilter.get().isBlank()) {
+//            model.addAttribute("products", productRepository.findAll());
+//        } else {
+//            model.addAttribute("products", productRepository.productsByTitle("%" + productFilter.get() + "%"));
+//        }
+//        return "product";
+//    }
+
     @GetMapping
-    public String listPage(@RequestParam Optional<String> productFilter, Model model) {
-        if(productFilter.isEmpty() || productFilter.get().isBlank()) {
-            model.addAttribute("products", productRepository.findAll());
-        } else {
-            model.addAttribute("products", productRepository.productsByTitle("%" + productFilter.get() + "%"));
-        }
+    public String listPage(@RequestParam(required = false) String titleFilter,
+                           @RequestParam(required = false) BigDecimal costMinFilter,
+                           @RequestParam(required = false) BigDecimal costMaxFilter, Model model) {
+        titleFilter = titleFilter == null || titleFilter.isBlank() ? null : "%" + titleFilter.trim() + "%";
+        costMinFilter = costMinFilter == null ? new BigDecimal(0) : costMinFilter;
+        costMaxFilter = costMaxFilter == null ? new BigDecimal(Double.MAX_VALUE) : costMaxFilter;
+     //   model.addAttribute("products", productRepository.productsByTitle(titleFilter));
+        model.addAttribute("products", productRepository.productsByTitleAndCost(titleFilter, costMinFilter, costMaxFilter));
         return "product";
     }
+
 
     @GetMapping("/{id}")
     public String form(@PathVariable("id") long id, Model model) {
