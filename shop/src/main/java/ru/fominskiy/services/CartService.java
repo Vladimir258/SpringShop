@@ -14,11 +14,11 @@ import ru.fominskiy.repositories.ProductRepository;
 
 import java.util.List;
 
-@Controller
+//@Controller
 //@Repository
 //@RequestMapping("/cartService")
-@Scope("prototype")
-@RequiredArgsConstructor
+//@Scope("prototype")
+//@RequiredArgsConstructor
 public class CartService {
 
 //    private final Cart cart;

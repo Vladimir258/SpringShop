@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.fominskiy.persists.Product;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-public class ProductRepositoryImp implements ProductRepository {
+public class InMemoryProductRepositoryImp implements ProductRepository {
 
     private final Map<Long, Product> productMap = new ConcurrentHashMap<>();
 
@@ -20,11 +21,11 @@ public class ProductRepositoryImp implements ProductRepository {
 
     @PostConstruct
     public void init() {
-        this.insert(new Product("Mouse", 10f));
-        this.insert(new Product("Keyboard", 12f));
-        this.insert(new Product("Monitor", 400F));
-        this.insert(new Product("Sound System", 20f));
-        this.insert(new Product("Video Card", 500f));
+        this.insert(new Product("Mouse", new BigDecimal(10)));
+        this.insert(new Product("Keyboard", new BigDecimal(12)));
+        this.insert(new Product("Monitor", new BigDecimal(400)));
+        this.insert(new Product("Sound System", new BigDecimal(20)));
+        this.insert(new Product("Video Card", new BigDecimal(500)));
     }
 
     public List<Product> findAll() {

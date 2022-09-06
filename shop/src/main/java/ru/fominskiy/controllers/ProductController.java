@@ -2,6 +2,8 @@ package ru.fominskiy.controllers;
 
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,14 +11,21 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.fominskiy.exceptions.EntityNotFoundException;
 import ru.fominskiy.persists.Product;
+import ru.fominskiy.repositories.DBProductRepositoryImpl;
 import ru.fominskiy.repositories.ProductRepository;
 
+import java.math.BigDecimal;
+
+//@Slf4j
 @Controller
 @RequestMapping("/product")
-@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductRepository productRepository;
+
+    public ProductController(@Qualifier("persistentProductRepository") DBProductRepositoryImpl productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @GetMapping
     public String listPage(Model model) {
@@ -33,7 +42,7 @@ public class ProductController {
 
     @GetMapping("/new")
     public String addNewProduct(Model model) {
-        model.addAttribute("product", new Product("", 0f));
+        model.addAttribute("product", new Product("", new BigDecimal(0)));
         return "product_form";
     }
 
