@@ -1,4 +1,4 @@
-package ru.fominskiy.services;
+package ru.fominskiy.persists;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Scope;

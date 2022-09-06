@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.fominskiy.services.Cart;
-
+import ru.fominskiy.persists.Cart;
 
 @Controller
 @RequestMapping("/product")

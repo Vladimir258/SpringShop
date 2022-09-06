@@ -1,9 +1,6 @@
 package ru.fominskiy.controllers;
 
 import javax.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,25 +8,27 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.fominskiy.exceptions.EntityNotFoundException;
 import ru.fominskiy.persists.Product;
-import ru.fominskiy.repositories.DBProductRepositoryImpl;
-import ru.fominskiy.repositories.ProductRepository;
-
+import ru.fominskiy.repositories.InDBProductRepository;
 import java.math.BigDecimal;
+import java.util.Optional;
 
-//@Slf4j
 @Controller
 @RequestMapping("/product")
 public class ProductController {
 
-    private final ProductRepository productRepository;
+    private final InDBProductRepository productRepository;
 
-    public ProductController(@Qualifier("persistentProductRepository") DBProductRepositoryImpl productRepository) {
+    public ProductController(InDBProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     @GetMapping
-    public String listPage(Model model) {
-        model.addAttribute("products", productRepository.findAll());
+    public String listPage(@RequestParam Optional<String> productFilter, Model model) {
+        if(productFilter.isEmpty() || productFilter.get().isBlank()) {
+            model.addAttribute("products", productRepository.findAll());
+        } else {
+            model.addAttribute("products", productRepository.productsByTitle("%" + productFilter.get() + "%"));
+        }
         return "product";
     }
 
@@ -48,7 +47,7 @@ public class ProductController {
 
     @DeleteMapping("{id}")
     public String deleteProductById(@PathVariable long id) {
-        productRepository.delete(id);
+        productRepository.deleteById(id);
         return "redirect:/product";
     }
 
