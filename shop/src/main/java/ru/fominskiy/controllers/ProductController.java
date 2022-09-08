@@ -1,6 +1,9 @@
 package ru.fominskiy.controllers;
 
 import javax.validation.Valid;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,13 +38,20 @@ public class ProductController {
 
     @GetMapping
     public String listPage(@RequestParam(required = false) String titleFilter,
-                           @RequestParam(required = false) BigDecimal costMinFilter,
-                           @RequestParam(required = false) BigDecimal costMaxFilter, Model model) {
+                         @RequestParam(required = false) BigDecimal costMinFilter,
+                         @RequestParam(required = false) BigDecimal costMaxFilter,
+                         @RequestParam(required = false) Optional<Integer> page,
+                         @RequestParam(required = false) Optional<Integer>  size,
+                           Model model) {
         titleFilter = titleFilter == null || titleFilter.isBlank() ? null : "%" + titleFilter.trim() + "%";
         costMinFilter = costMinFilter == null ? new BigDecimal(0) : costMinFilter;
         costMaxFilter = costMaxFilter == null ? new BigDecimal(Double.MAX_VALUE) : costMaxFilter;
      //   model.addAttribute("products", productRepository.productsByTitle(titleFilter));
-        model.addAttribute("products", productRepository.productsByTitleAndCost(titleFilter, costMinFilter, costMaxFilter));
+
+        Integer pageValue = page.orElse(1) - 1;
+        Integer sizeValue = size.orElse(3);
+
+        model.addAttribute("product", productRepository.productsByTitleAndCost(titleFilter, costMinFilter, costMaxFilter, PageRequest.of(pageValue, sizeValue)));
         return "product";
     }
 
