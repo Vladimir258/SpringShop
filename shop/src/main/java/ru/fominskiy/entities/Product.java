@@ -1,4 +1,4 @@
-package ru.fominskiy.persists;
+package ru.fominskiy.entities;
 
 import lombok.*;
 import javax.persistence.*;
@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     @Id

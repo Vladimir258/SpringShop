@@ -9,5 +9,5 @@ public class SpringShopApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringShopApplication.class, args);
 	}
-	// 2.06.18
+
 }

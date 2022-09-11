@@ -83,3 +83,9 @@ fabric.properties
 shop/target/classes/templates/
 
 shop/target/classes/application.properties
+
+shop/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+
+shop/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+
+shop/target/classes/import.sql
