@@ -10,6 +10,7 @@ import ru.fominskiy.entities.dto.ProductDto;
 import ru.fominskiy.exceptions.EntityNotFoundException;
 import ru.fominskiy.services.ProductService;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
@@ -24,12 +25,17 @@ public class ProductController {
     @GetMapping
     public String listPage(@RequestParam(required = false) String titleFilter,
                            @RequestParam(required = false) BigDecimal costMinFilter,
-                           @RequestParam(required = false) BigDecimal costMaxFilter, Model model) {
+                           @RequestParam(required = false) BigDecimal costMaxFilter,
+                           @RequestParam(required = false) Optional<Integer> page,
+                           @RequestParam(required = false) Optional<Integer> size,
+                           Model model) {
+        Integer pageValue = page.orElse(1) - 1;
+        Integer sizeValue = size.orElse(3);
         titleFilter = titleFilter == null || titleFilter.isBlank() ? null : "%" + titleFilter.trim() + "%";
         costMinFilter = costMinFilter == null ? new BigDecimal(0) : costMinFilter;
         costMaxFilter = costMaxFilter == null ? new BigDecimal(Double.MAX_VALUE) : costMaxFilter;
 
-        model.addAttribute("products", productService.productsByTitleAndCost(titleFilter, costMinFilter, costMaxFilter));
+        model.addAttribute("products", productService.productsByTitleAndCost(titleFilter, costMinFilter, costMaxFilter, pageValue, sizeValue));
         return "product";
     }
 
