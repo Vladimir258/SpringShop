@@ -3,6 +3,7 @@ package ru.fominskiy.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.fominskiy.entities.Product;
 import ru.fominskiy.entities.dto.ProductDto;
@@ -18,9 +19,9 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductDtoMapper mapper;
 
-    public Page<ProductDto> productsByTitleAndCost(String titleFilter, BigDecimal costMinFilter, BigDecimal costMaxFilter, Integer page, Integer size) {
+    public Page<ProductDto> productsByTitleAndCost(String titleFilter, BigDecimal costMinFilter, BigDecimal costMaxFilter, Integer page, Integer size, String sortField) {
 
-        return productRepository.productsByTitleAndCost(titleFilter, costMinFilter, costMaxFilter, PageRequest.of(page, size))
+        return productRepository.productsByTitleAndCost(titleFilter, costMinFilter, costMaxFilter, PageRequest.of(page, size, Sort.by(sortField)))
                 .map(mapper::map);
     }
 

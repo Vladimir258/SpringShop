@@ -28,14 +28,16 @@ public class ProductController {
                            @RequestParam(required = false) BigDecimal costMaxFilter,
                            @RequestParam(required = false) Optional<Integer> page,
                            @RequestParam(required = false) Optional<Integer> size,
+                           @RequestParam(required = false) Optional<String> sortField,
                            Model model) {
         Integer pageValue = page.orElse(1) - 1;
         Integer sizeValue = size.orElse(3);
+        String sortFieldValue = sortField.filter(s -> !s.isBlank()).orElse("id");
         titleFilter = titleFilter == null || titleFilter.isBlank() ? null : "%" + titleFilter.trim() + "%";
         costMinFilter = costMinFilter == null ? new BigDecimal(0) : costMinFilter;
         costMaxFilter = costMaxFilter == null ? new BigDecimal(Double.MAX_VALUE) : costMaxFilter;
 
-        model.addAttribute("products", productService.productsByTitleAndCost(titleFilter, costMinFilter, costMaxFilter, pageValue, sizeValue));
+        model.addAttribute("products", productService.productsByTitleAndCost(titleFilter, costMinFilter, costMaxFilter, pageValue, sizeValue, sortFieldValue));
         return "product";
     }
 
