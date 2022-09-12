@@ -89,3 +89,5 @@ shop/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFi
 shop/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 
 shop/target/classes/import.sql
+
+shop/target/generated-sources/annotations/ru/fominskiy/entities/mapper/ProductDtoMapperImpl.java
