@@ -1,10 +1,8 @@
 package ru.fominskiy.repositories;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.fominskiy.entities.Role;
 
-@Repository
-public interface RoleRepository extends CrudRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
 }

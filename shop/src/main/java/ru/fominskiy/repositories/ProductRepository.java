@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 import ru.fominskiy.entities.Product;
+import ru.fominskiy.entities.User;
+
 import java.math.BigDecimal;
 
 @Repository

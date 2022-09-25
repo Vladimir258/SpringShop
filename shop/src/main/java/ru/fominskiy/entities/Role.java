@@ -1,18 +1,22 @@
 package ru.fominskiy.entities;
 
-import lombok.Data;
+import lombok.*;
 import javax.persistence.*;
+import java.util.Set;
 
-// Модель для хранения ролей
-@Entity //
-@Data //
-@Table(name = "roles") //
-public class Role { //
-    @Id //
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //
-    @Column(name = "id") //
-    private Long id; //
+@Entity
+@Table(name = "roles")
+@Getter
+@Setter
+@NoArgsConstructor
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "name") //
-    private String name; //
+    @Column(nullable = false)
+    private String name;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 }
